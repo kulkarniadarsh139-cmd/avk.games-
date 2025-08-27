@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Adarsh — High‑Tech Games Hub (10 Games)</title>
+  <style>
+    :root{--bg:#071021;--card:#0f1724;--muted:#8b98b6;--text:#e6f7ff;--neon:#00ffd0;--danger:#ff4b5c}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;background:radial-gradient(800px 400px at 10% -10%,#08112600,transparent),var(--bg);color:var(--text)}
+    header{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-bottom:1px solid #122133}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--neon),#4cc0ff);box-shadow:0 6px 28px rgba(0,255,208,.14)}
+    h1{font-size:18px;margin:0}
+    main{max-width:1100px;margin:26px auto;padding:0 18px}
+    .muted{color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+
+    .card{background:linear-gradient(180deg,#081222,rgba(255,255,255,0.01));border:1px solid #17263f;padding:16px;border-radius:14px;box-shadow:0 8px 28px rgba(3,8,18,.6)}
+    .card h3{margin:0 0 6px 0}
+    .play-btn{background:linear-gradient(90deg,var(--neon),#4cc0ff);color:#002027;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700;box-shadow:0 8px 30px rgba(0,255,208,.06)}
+
+    footer{margin-top:28px;padding:18px;border-radius:12px;background:#071020;border:1px solid #122133;color:var(--muted)}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(2,6,12,.5),rgba(2,6,12,.75));backdrop-filter:blur(6px);z-index:60}
+    .modal.open{display:flex}
+    .panel{width:min(980px,96vw);max-height:86vh;overflow:auto;border-radius:12px;background:#071428;border:1px solid #16314f;padding:14px}
+    .panel header{display:flex;justify-content:space-between;align-items:center;padding-bottom:8px}
+    .panel header h2{margin:0}
+    .close{background:#0f2233;color:var(--text);border:1px solid #1f3a55;padding:8px 10px;border-radius:8px;cursor:pointer}
+
+    /* F1 lights */
+    .lights{display:flex;gap:12px;justify-content:center;margin:12px 0}
+    .bulb{width:52px;height:52px;border-radius:50%;background:#081220;border:2px solid #17304e;box-shadow:inset 0 4px 8px rgba(0,0,0,.6)}
+    .bulb.red{background:radial-gradient(circle,#ff4b5c,#a80000);box-shadow:0 0 28px rgba(255,75,92,.18)}
+    .bulb.green{background:radial-gradient(circle,#4cff9c,#00b36a);box-shadow:0 0 28px rgba(76,255,156,.22)}
+    .reflex-display{font-family:monospace;font-size:20px;margin-top:8px}
+    .kbd{display:inline-block;padding:6px 8px;border-radius:8px;border:1px solid #15314a;background:#0d2236;font-weight:700}
+
+    /* Maze */
+    .maze-canvas{background:#091223;border-radius:8px;border:1px solid #16314f}
+    .hint{color:var(--muted);font-size:13px}
+
+    /* TicTacToe */
+    .ttt{display:grid;grid-template-columns:repeat(3,96px);gap:8px;margin:8px 0}
+    .cell{width:96px;height:96px;background:#07172a;border-radius:10px;display:grid;place-items:center;font-size:34px;cursor:pointer;border:1px solid #16405f}
+    .controls{display:flex;gap:8px;align-items:center}
+
+    /* small misc */
+    .game-area{padding:10px;background:linear-gradient(#071226,transparent);border-radius:10px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand"><div class="logo"></div><h1>Adarsh's High‑Tech Games Hub</h1></div>
+    <div class="muted">Founder: Adarsh V Kulkarni • DOB: 27‑02‑2010</div>
+  </header>
+
+  <main>
+    <p class="muted">10 mini‑games — high tech look. Open any card to play. (Reflex now works like F1 start lights: Start → Wait → GO!)</p>
+
+    <section class="grid">
+      <div class="card"><h3>🚦 F1 Reflex Start</h3><p class="muted">Click Start or press <span class="kbd">Enter</span>. When lights turn GREEN, click anywhere or press Enter. Early clicks = Try again.</p><button class="play-btn" onclick="openModal('f1')">Play</button></div>
+      <div class="card"><h3>🧠 Memory Flash</h3><p class="muted">Memorize digits and type them back.</p><button class="play-btn" onclick="openModal('memory')">Play</button></div>
+      <div class="card"><h3>🔢 Number Guess (1–100)</h3><p class="muted">Hint: Higher/Lower, 10 tries.</p><button class="play-btn" onclick="openModal('guess')">Play</button></div>
+      <div class="card"><h3>⌨️ Typing Burst</h3><p class="muted">Type fast — WPM score.</p><button class="play-btn" onclick="openModal('typing')">Play</button></div>
+      <div class="card"><h3>🎨 Color Trick</h3><p class="muted">Choose the <em>ink</em> color, not the word.</p><button class="play-btn" onclick="openModal('stroop')">Play</button></div>
+      <div class="card"><h3>✊ Rock Paper Scissors</h3><p class="muted">Classic — quick fun.</p><button class="play-btn" onclick="openModal('rps')">Play</button></div>
+      <div class="card"><h3>🔨 Whack‑A‑Mole</h3><p class="muted">30s — score high by tapping the mole.</p><button class="play-btn" onclick="openModal('mole')">Play</button></div>
+      <div class="card"><h3>🎯 Aim Trainer</h3><p class="muted">Click 10 targets fast.</p><button class="play-btn" onclick="openModal('aim')">Play</button></div>
+      <div class="card"><h3>🧩 Mini Maze (HARD)</h3><p class="muted">Use arrow keys. Maze is THICKER and twistier — a real challenge.</p><button class="play-btn" onclick="openModal('maze')">Play</button></div>
+      <div class="card"><h3>⭕ Tic‑Tac‑Toe (3 modes)</h3><p class="muted">Choose Easy / Medium / Hard (Unbeatable).</p><button class="play-btn" onclick="openModal('ttt')">Play</button></div>
+    </section>
+
+    <footer>
+      <p class="muted">Made by <strong>Adarsh V Kulkarni</strong> (27‑02‑2010). I built this for fun — share with friends!</p>
+    </footer>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal" id="modal"><div class="panel"><header><h2 id="mTitle">Game</h2><button class="close" onclick="closeModal()">Close ✕</button></header><div id="mBody"></div></div></div>
+
+  <script>
+    const modal = document.getElementById('modal'); const mTitle = document.getElementById('mTitle'); const mBody = document.getElementById('mBody');
+    let cleanup = null;
+    function openModal(id){ if(cleanup){ try{cleanup()}catch(e){} cleanup=null } modal.classList.add('open'); mBody.innerHTML=''; mTitle.textContent='';
+      if(id==='f1') buildF1(); if(id==='memory') buildMemory(); if(id==='guess') buildGuess(); if(id==='typing') buildTyping(); if(id==='stroop') buildStroop(); if(id==='rps') buildRPS(); if(id==='mole') buildMole(); if(id==='aim') buildAim(); if(id==='maze') buildMaze(); if(id==='ttt') buildTTT();
+    }
+    function closeModal(){ modal.classList.remove('open'); mBody.innerHTML=''; mTitle.textContent=''; if(cleanup){try{cleanup()}catch(e){} cleanup=null} }
+
+    // ===== 1) F1 Reflex Start (improved) =====
+    function buildF1(){
+      mTitle.textContent='🚦 F1 Reflex Start';
+      mBody.innerHTML = `
+        <div class="game-area" style="text-align:center">
+          <p class="muted">Click <strong>Start</strong> or press <span class="kbd">Enter</span> to begin. When lights go GREEN — <strong>click anywhere</strong> or press <span class="kbd">Enter</span>.</p>
+          <div class="lights" id="f1Lights"></div>
+          <div class="reflex-display" id="f1Msg">Ready</div>
+          <div style="margin-top:12px"><button id="f1Start" class="play-btn">Start</button></div>
+        </div>`;
+
+      const lights = document.getElementById('f1Lights'); const msg = document.getElementById('f1Msg'); const startBtn = document.getElementById('f1Start');
+      lights.innerHTML='';
+      const bulbs = [];
+      for(let i=0;i<5;i++){ const b=document.createElement('div'); b.className='bulb'; lights.appendChild(b); bulbs.push(b) }
+
+      let state='idle'; // idle, sequence, waiting, green, done
+      let seqTimer=null, gapTimer=null, startTime=0;
+
+      function reset(){ state='idle'; msg.textContent='Ready'; bulbs.forEach(b=>{b.className='bulb'}); clearTimers() }
+      function clearTimers(){ if(seqTimer){ clearInterval(seqTimer); seqTimer=null } if(gapTimer){ clearTimeout(gapTimer); gapTimer=null } }
+
+      function startSequence(){ if(state==='sequence' || state==='waiting' || state==='green') return; reset(); state='sequence'; msg.textContent='Lights on...'; let i=0; seqTimer = setInterval(()=>{ if(i<5) bulbs[i].className='bulb red'; i++; if(i>=5){ clearInterval(seqTimer); seqTimer=null; // after all red, random gap then green
+            state='waiting'; msg.textContent='Get ready...'; const gap = 800 + Math.random()*2200; gapTimer = setTimeout(()=>{ // switch to green
+              bulbs.forEach(b=>{ b.classList.remove('red'); b.classList.add('green') }); state='green'; startTime = performance.now(); msg.textContent='GO! Click or press Enter!'; gapTimer=null;
+            }, gap);
+          } }, 450) }
+
+      function tooEarly(){ reset(); msg.textContent='Too early! Try again.' }
+      function react(){ if(state!=='green') { if(state==='waiting' || state==='sequence'){ tooEarly(); } return } const t = Math.round(performance.now()-startTime); msg.textContent = `Your reflex time: ${t} ms`; state='done'; // after done, clear bulbs (show result)
+        // flash effect
+        setTimeout(()=>{ bulbs.forEach(b=>b.className='bulb') },1200)
+      }
+
+      // click anywhere in modal should react (unless on buttons)
+      function onDocClick(e){ if(!modal.classList.contains('open')) return; // ignore
+        // ignore clicks on start button to not double-call
+        if(e.target && e.target.id==='f1Start') return; react(); }
+      function onKey(e){ if(e.key==='Enter'){ e.preventDefault(); if(state==='idle' || state==='done') startSequence(); else react() } }
+
+      startBtn.onclick = ()=>{ startSequence() };
+      window.addEventListener('keydown', onKey); window.addEventListener('click', onDocClick);
+      cleanup = ()=>{ window.removeEventListener('keydown', onKey); window.removeEventListener('click', onDocClick); clearTimers() }
+    }
+
+    // ===== 2) Memory Flash =====
+    function buildMemory(){ mTitle.textContent='🧠 Memory Flash';
+      const seq = Array.from({length: Math.floor(Math.random()*3)+4}, ()=> Math.floor(Math.random()*9));
+      mBody.innerHTML = `<div class="game-area"><p class="muted">Memorize the digits shown then type them back (press Enter).</p><div id="memShow" style="font-size:36px;letter-spacing:8px;margin:12px"></div><input id="memIn" class="btn" style="width:70%" placeholder="Type sequence..." /><p id="memResult" class="muted"></p></div>`;
+      const memShow=document.getElementById('memShow'), memIn=document.getElementById('memIn'), memResult=document.getElementById('memResult');
+      memShow.textContent=''; let i=0; const showInt=setInterval(()=>{ memShow.textContent += seq[i]; i++; if(i>=seq.length){ clearInterval(showInt); setTimeout(()=>{ memShow.textContent=''; memIn.focus() },700) } },600);
+      memIn.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ if(memIn.value.trim()===seq.join('')) memResult.textContent='✅ Correct!'; else memResult.textContent=`❌ It was ${seq.join('')}` } });
+      cleanup = ()=>{} }
+
+    // ===== 3) Number Guess =====
+    function buildGuess(){ mTitle.textContent='🔢 Number Guess 1–100'; mBody.innerHTML=`<div class="game-area"><p class="muted">You have 10 tries. Good luck!</p><input id="gInput" type="number" min="1" max="100" style="width:110px" /><button class="play-btn" id="gBtn">Guess</button><p id="gMsg" class="muted"></p></div>`;
+      const target = Math.floor(Math.random()*100)+1; let tries=10; document.getElementById('gBtn').onclick = ()=>{ const v=Number(document.getElementById('gInput').value); const gMsg=document.getElementById('gMsg'); if(!v){ gMsg.textContent='Enter a number'; return } tries--; if(v===target){ gMsg.textContent='🎉 Correct!'; document.getElementById('gBtn').disabled=true } else if(tries<=0){ gMsg.textContent=`😵 Out of tries! It was ${target}`; document.getElementById('gBtn').disabled=true } else gMsg.textContent = v<target? `Higher ↑ (tries left ${tries})` : `Lower ↓ (tries left ${tries})` }
+      cleanup = ()=>{} }
+
+    // ===== 4) Typing Burst =====
+    function buildTyping(){ mTitle.textContent='⌨️ Typing Burst'; const sentences=['practice makes perfect','adarsh built this site for fun','fast fingers win races','code and play']; const text = sentences[Math.floor(Math.random()*sentences.length)]; mBody.innerHTML=`<div class="game-area"><p class="muted">Type the sentence below and press Enter when done.</p><p style="font-size:18px">"${text}"</p><input id="typeIn" class="btn" style="width:92%" /><p id="typeMsg" class="muted"></p></div>`; const inEl=document.getElementById('typeIn'), msg=document.getElementById('typeMsg'); let start=0; inEl.addEventListener('input', ()=>{ if(!start) start=performance.now() }); inEl.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); const done=performance.now(); const sec=(done-start)/1000 || 1; const wpm=Math.round((text.length/5)/(sec/60)); msg.textContent = inEl.value.trim()===text? `✅ ${wpm} WPM` : '❌ Text mismatch' } }); cleanup = ()=>{} }
+
+    // ===== 5) Color Trick (Stroop) =====
+    function buildStroop(){ mTitle.textContent='🎨 Color Trick'; const colors=['red','green','blue','yellow','purple','orange']; mBody.innerHTML=`<div class="game-area" style="text-align:center"><div id="stWord" style="font-size:36px;margin:10px"></div><div id="stBtns"></div><p id="stMsg" class="muted"></p></div>`; const stWord=document.getElementById('stWord'), stBtns=document.getElementById('stBtns'), stMsg=document.getElementById('stMsg'); let score=0, round=0; colors.forEach(c=>{ const b=document.createElement('button'); b.className='play-btn'; b.textContent=c; b.style.borderColor=c; b.onclick=()=>{ if(round>10) return; if(c===stWord.dataset.ink) score++; round++; next(); }; stBtns.appendChild(b) }); function next(){ if(round>=10){ stMsg.textContent=`Score ${score}/10`; return } const word=colors[Math.floor(Math.random()*colors.length)]; const ink=colors[Math.floor(Math.random()*colors.length)]; stWord.textContent = word; stWord.style.color = ink; stWord.dataset.ink = ink; stMsg.textContent = `Round ${round+1}/10` } next(); cleanup = ()=>{} }
+
+    // ===== 6) Rock Paper Scissors =====
+    function buildRPS(){ mTitle.textContent='✊ Rock Paper Scissors'; mBody.innerHTML=`<div class="game-area" style="text-align:center"><button class="play-btn" data-move="rock">Rock</button><button class="play-btn" data-move="paper">Paper</button><button class="play-btn" data-move="scissors">Scissors</button><p id="rpsMsg" class="muted"></p></div>`; const msg=document.getElementById('rpsMsg'); const moves=['rock','paper','scissors']; mBody.querySelectorAll('button[data-move]').forEach(b=> b.onclick=()=>{ const you=b.dataset.move; const bot=moves[Math.floor(Math.random()*3)]; let res='Draw'; if(you!==bot){ if((you==='rock'&&bot==='scissors')||(you==='paper'&&bot==='rock')||(you==='scissors'&&bot==='paper')) res='You win'; else res='Bot wins' } msg.textContent=`You: ${you} | Bot: ${bot} → ${res}` }); cleanup=()=>{} }
+
+    // ===== 7) Whack a Mole =====
+    function buildMole(){ mTitle.textContent='🔨 Whack‑A‑Mole'; mBody.innerHTML=`<div class="game-area"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="holes"></div><p id="mScore" class="muted">Score: 0</p></div>`; const holes=document.getElementById('holes'), scoreEl=document.getElementById('mScore'); let score=0, active=-1, timer=null, end=Date.now()+30000; holes.innerHTML=''; for(let i=0;i<9;i++){ const h=document.createElement('div'); h.style.height='90px'; h.style.background='#071224'; h.style.borderRadius='10px'; h.style.display='grid'; h.style.placeItems='center'; holes.appendChild(h); h.onclick=(()=>{ const idx=i; return ()=>{ if(idx===active){ score++; scoreEl.textContent=`Score: ${score}`; active=-1 } } })() }
+      function tick(){ if(Date.now()>end){ clearInterval(timer); scoreEl.textContent=`Time up! Final: ${score}`; return } active=Math.floor(Math.random()*9); holes.forEach((h,idx)=>{ h.innerHTML = idx===active? '🐹':' ' }); }
+      timer=setInterval(tick,700); tick(); cleanup=()=>clearInterval(timer) }
+
+    // ===== 8) Aim Trainer =====
+    function buildAim(){ mTitle.textContent='🎯 Aim Trainer'; mBody.innerHTML=`<div class="game-area" id="aimArea" style="height:260px;position:relative"></div><p id="aimMsg" class="muted">Click 10 targets.</p>`; const area=document.getElementById('aimArea'), msg=document.getElementById('aimMsg'); let hits=0, start=0; area.innerHTML=''; function spawn(){ if(hits>=10){ const t=(performance.now()-start)/1000; msg.textContent=`Done! Time: ${t.toFixed(2)}s`; return } const d=document.createElement('div'); d.style.position='absolute'; const size=36; const r=area.getBoundingClientRect(); const x=Math.random()*(Math.max(1,r.width-size-10))+10; const y=Math.random()*(Math.max(1,r.height-size-10))+10; d.style.left=x+'px'; d.style.top=y+'px'; d.style.width=size+'px'; d.style.height=size+'px'; d.style.borderRadius='50%'; d.style.background='linear-gradient(135deg,#00ffd0,#4cc0ff)'; d.style.boxShadow='0 10px 40px rgba(0,255,208,.08)'; d.onclick=()=>{ if(hits===0) start=performance.now(); hits++; d.remove(); spawn() }; area.appendChild(d) }
+      spawn(); cleanup=()=>{} }
+
+    // ===== 9) Hard Maze =====
+    function buildMaze(){ mTitle.textContent='🧩 Mini Maze — HARD'; mBody.innerHTML=`<div class="game-area"><p class="muted">Use arrow keys. Reach the red square. Timer shows seconds.</p><canvas id="mazeCanvas" class="maze-canvas" width="760" height="420"></canvas><p class="hint">Tip: Use small steps and watch walls. Press Esc to exit.</p></div>`;
+      const canvas=document.getElementById('mazeCanvas'); const ctx=canvas.getContext('2d'); const cols=38, rows=21; const cellW=20; // create a challenging maze layout (0=open,1=wall)
+      // We'll procedurally generate a maze using randomized DFS for a guaranteed solvable but tricky maze
+      const grid = Array(rows).fill(0).map(()=>Array(cols).fill(1));
+      // carve passages
+      function carve(r,c){ grid[r][c]=0; const dirs = [[0,2],[0,-2],[2,0],[-2,0]]; for(let i=dirs.length-1;i>=0;i--){ const j=Math.floor(Math.random()*(i+1)); const tmp=dirs[i]; dirs[i]=dirs[j]; dirs[j]=tmp };
+        for(const [dr,dc] of dirs){ const nr=r+dr, nc=c+dc; if(nr>0 && nr<rows-1 && nc>0 && nc<cols-1 && grid[nr][nc]===1){ grid[r+dr/2][c+dc/2]=0; carve(nr,nc) } }
+      }
+      // start carving from (1,1)
+      carve(1,1);
+      // place player and goal in opposite corners
+      let px=1, py=1; let gx=cols-2, gy=rows-2;
+
+      function draw(){ ctx.fillStyle='#071226'; ctx.fillRect(0,0,canvas.width,canvas.height); for(let r=0;r<rows;r++){ for(let c=0;c<cols;c++){ if(grid[r][c]===1){ ctx.fillStyle='#0d2338'; ctx.fillRect(c*cellW,r*cellW,cellW,cellW); } } }
+        // draw goal
+        ctx.fillStyle='#ff4b5c'; ctx.fillRect(gx*cellW+4,gy*cellW+4,cellW-8,cellW-8);
+        // draw player
+        ctx.fillStyle='#00ffd0'; ctx.fillRect(px*cellW+5,py*cellW+5,cellW-10,cellW-10);
+      }
+
+      draw(); let startTime=performance.now(); function move(dx,dy){ const nx=px+dx, ny=py+dy; if(nx<0||nx>=cols||ny<0||ny>=rows) return; if(grid[ny][nx]===0){ px=nx; py=ny; draw(); if(px===gx && py===gy){ const t=Math.round((performance.now()-startTime)/1000); setTimeout(()=>alert(`🎉 Maze complete in ${t} s`),50); } } }
+      function onKey(e){ if(e.key==='ArrowLeft') move(-1,0); if(e.key==='ArrowRight') move(1,0); if(e.key==='ArrowUp') move(0,-1); if(e.key==='ArrowDown') move(0,1); if(e.key==='Escape') closeModal(); }
+      window.addEventListener('keydown', onKey); cleanup = ()=> window.removeEventListener('keydown', onKey);
+    }
+
+    // ===== 10) Tic-Tac-Toe with 3 modes =====
+    function buildTTT(){ mTitle.textContent='⭕ Tic‑Tac‑Toe (Easy • Medium • Hard)'; mBody.innerHTML=`<div class="game-area"><div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><label class="muted">Mode:</label><select id="tttMode"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select><button class="play-btn" id="tttReset">New Game</button></div><div id="board" class="ttt"></div><p id="tttMsg" class="muted"></p></div>`;
+      const boardEl=document.getElementById('board'), modeSel=document.getElementById('tttMode'), msg=document.getElementById('tttMsg'), resetBtn=document.getElementById('tttReset');
+      let board = Array(9).fill(null); let human='X', ai='O'; let over=false;
+      function render(){ boardEl.innerHTML=''; for(let i=0;i<9;i++){ const cell=document.createElement('div'); cell.className='cell'; cell.dataset.idx=i; cell.textContent = board[i]||''; cell.onclick=()=>{ if(over||board[i]) return; board[i]=human; render(); if(checkWin(board,human)){ msg.textContent='You win!'; over=true; return } if(board.every(Boolean)){ msg.textContent='Draw'; over=true; return } aiMove(); }; boardEl.appendChild(cell) } }
+      function checkWin(b,pl){ const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]; return wins.some(l=> l.every(i=> b[i]===pl)) }
+      function emptyIndices(b){ return b.map((v,i)=> v? null:i).filter(v=>v!==null) }
+      // easy: random
+      function aiEasy(){ const empt=emptyIndices(board); const pick=empt[Math.floor(Math.random()*empt.length)]; board[pick]=ai; }
+      // medium: win if possible, block if needed, else random
+      function aiMedium(){ // win
+        for(const i of emptyIndices(board)){ const copy=board.slice(); copy[i]=ai; if(checkWin(copy,ai)){ board[i]=ai; return } }
+        // block
+        for(const i of emptyIndices(board)){ const copy=board.slice(); copy[i]=human; if(checkWin(copy,human)){ board[i]=ai; return } }
+        aiEasy();
+      }
+      // hard: minimax
+      function aiHard(){ const move = minimax(board,ai).index; if(move!==undefined) board[move]=ai; }
+      function aiMove(){ if(over) return; const mode=modeSel.value; if(mode==='easy') aiEasy(); else if(mode==='medium') aiMedium(); else aiHard(); render(); if(checkWin(board,ai)){ msg.textContent='Computer wins'; over=true; return } if(board.every(Boolean)){ msg.textContent='Draw'; over=true; return } }
+
+      resetBtn.onclick = ()=>{ board=Array(9).fill(null); over=false; msg.textContent=''; render(); if(modeSel.value==='hard' && Math.random()<0.5){ aiMove() } }
+      // minimax implementation
+      function minimax(newBoard, player){ const avail = newBoard.map((v,i)=> v? null:i).filter(v=>v!==null); if(checkWin(newBoard,human)) return {score:-10}; if(checkWin(newBoard,ai)) return {score:10}; if(avail.length===0) return {score:0}; const moves=[]; for(const i of avail){ const move={}; move.index=i; const boardCopy=newBoard.slice(); boardCopy[i]=player; if(player===ai){ const result=minimax(boardCopy,human); move.score = result.score; } else { const result=minimax(boardCopy,ai); move.score = result.score; } moves.push(move) }
+        let bestMove; if(player===ai){ let bestScore=-Infinity; for(const m of moves){ if(m.score>bestScore){ bestScore=m.score; bestMove=m } } return bestMove } else { let bestScore=Infinity; for(const m of moves){ if(m.score<bestScore){ bestScore=m.score; bestMove=m } } return bestMove }
+      }
+      // initial render
+      render(); cleanup = ()=>{}
+    }
+  </script>
+</body>
+</html>
